@@ -19,7 +19,6 @@ html, body {
     width: auto;
     margin: 0;
     box-sizing: border-box;
-    background-color: blue;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -28,6 +27,25 @@ html, body {
 
 #min-date-box, #max-date-box {
     margin: 10px;
+    background-color: #4421AE;
+    white-space: nowrap;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 60px;
+    border-radius: 100px;
+    padding: 10px 20px;
+}
+
+#min-date, #max-date {
+    font-size: 40px;
+    font-weight: bold;
+}
+
+#era {
+    font-size: 30px;
+    padding-top: 8px;
+    color: #CCD5FF;
 }
 
 #slider {
@@ -37,15 +55,23 @@ html, body {
     appearance: none;
     cursor: pointer;
     outline: none;
-    background-color: blue;
-    background: black;
-    background: url(images/slider-control.png);
-
+    background-color: white;
+    background: white;
+    height: 30px;
+    border-radius: 50px;
+    border: 1px solid #4421AE;
+    align-self: center;
 }
 
 input[type="range"]::-webkit-slider-runnable-track {
-    height: 20px;
-    background: #4421AE;
+    height: 30px;
+    background: linear-gradient(
+        to right,
+        #4421AE 0%,
+        #4421AE var(--val),
+        #CCD5FF var(--val),
+        #CCD5FF 100%
+    );
     border-radius: 20px;
 }
 
@@ -58,11 +84,22 @@ input[type="range"]::-moz-range-track {
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    height: 20px;
-    width: 20px;
+    height: 90px;
+    width: 30px;
     background: url('../images/slider-control.png');
     border: 0;
+    position: relative;
+    margin-top: calc((20px - 90px) / 2);
 }
+
+input[type="range"]::-moz-range-thumb {
+    height: 90px;
+    width: 30px;
+    background: url('../images/slider-control.png') center/contain no-repeat;
+    border: 0;
+    border-radius: 0;
+}
+
 nav {
     display: flex;
     flex-direction: row;

@@ -29,6 +29,17 @@ let whitelist = [
   "country_points_labels"
 ];
 
+// set --val so that I can have the background to the right of the slider a different color
+const slider = document.getElementById("slider")
+const setFill = () => {
+    const min = Number(slider.min)
+    const max = Number(slider.max)
+    const val = ((slider.value - min) / (max - min)) * 100;
+    slider.style.setProperty('--val', `${val}%`); 
+}
+slider.addEventListener('input', setFill);
+setFill()
+
 // used to loop through and add event listeners automatically
 // list consists of lists of lists OH NO
 // where the structure of each list inside the list is

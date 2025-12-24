@@ -20,7 +20,7 @@
             <div id="export" class="nav-item">
                 <img src="images/icons/save.png">
                 <h3>Save</h3>
-                <h3>Save as</h3>
+                <h3>Save As</h3>
                 <h3>Load</h3>
             </div>
             <div id="filter" class="nav-item">
@@ -41,21 +41,21 @@
         <script src="javascript/script.js" defer></script>
         <div id="slider-box">
             <div id="min-date-box">
-                <p id="min-date">67 BC</p>
-                <input type="number"></input>
+                <p id="min-date">67</p><p id="era">BC</p>
+                <!-- <input type="number"></input>
                 <select name="era" id="era">
                     <option value="BC">BC</option>
                     <option value="AD">AD</option>
-                </select>
+                </select> -->
             </div>
-            <input id="slider" type="range"></input>
+            <input id="slider" type="range" min="-67" max="67"></input>
             <div id="max-date-box">
-                <p id="min-date">67 AD</p>
-                <input type="number"></input>
-                <select name="era" id="era">
+                <p id="min-date">67<p id="era">AD</p></p>
+                <!-- <input type="number"></input>
+                <select name="era" id="era-input">
                     <option value="BC">BC</option>
                     <option value="AD">AD</option>
-                </select>
+                </select> -->
             </div>
         </div>
     </body>
