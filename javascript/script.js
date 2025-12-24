@@ -118,10 +118,18 @@ function updateMapLayers() {
   }
 }
 
+// event listener to update the map date based on the slider
+slider.addEventListener('mouseup', () => {
+  date = Number(slider.value)
+  date = date.toString()
+  console.log(date)
+  console.log(slider.value)
+  map.filterByDate(date)
+});
 
 //show everything but the whitelist on load 
 // CURRENTLY TAKES A WHILE TO WORK AFTER MAP LOADS
 map.on("styledata", () => {
   updateMapLayers()
-  map.filterByDate("1997")
+  map.filterByDate("-201")
 });
