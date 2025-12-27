@@ -37,8 +37,6 @@ map.addControl(new maplibregl.NavigationControl());
 let whitelist = [
   "ohm_admin_boundaries",
   "ohm_landcover_hillshade",
-  "boundary",
-  "boundaries",
   "background",
   "land",
   "state_lines_admin_4",
@@ -47,8 +45,6 @@ let whitelist = [
   "city_labels_town_z8",
   "city_labels_z11",
   "city_labels_z6",
-  // "boundaries_admin_34",
-  // "boundaries_admin_12",
   "country_points_labels_cen",
   "country_points_labels",
   "country-boundaries"
@@ -70,7 +66,7 @@ setFill()
 // where the structure of each list inside the list is
 // ["elementID", ["layers", "that", "it", "toggles", "off"], default-checked-boolean]
 let toggleableObjects = [
-  ["land", ["land"], true],
+  ["land", ["land", "ohm_landcover_hillshade"], true],
   ["background", ["background"], true],
   ["borders", ["country-boundaries"], true],
   ["labels", ["city_locality_labels_other_z11",
@@ -79,15 +75,15 @@ let toggleableObjects = [
   "city_labels_z11",
   "city_labels_z6",
   "country_points_labels_cen", 
-  "country_points_labels"], true]
+  "country_points_labels",
+  "placearea_label"], true],
+  ["rivers", [], false]
 ];
 
 // toggle event listeners
 
 for (const [id, layers, defaultChecked] of toggleableObjects) {
   const el = document.getElementById(id)
-  const isOn = () => !el.classList.contains('greyed-out')
-  console.log(isOn())
   // apply default on/off values 
   el.classList.add('greyed-out')
   if (defaultChecked) {
@@ -109,7 +105,7 @@ for (const [id, layers, defaultChecked] of toggleableObjects) {
 
   // EVENT LISTENER!!! [scheming silently]
   el.addEventListener("click", () => {
-    if (isOn()) {
+    if (el.classList.contains('greyed-out')) {
       for (const i of layers) {
         if (!whitelist.includes(i)) {
           whitelist.push(i)
@@ -129,7 +125,7 @@ for (const [id, layers, defaultChecked] of toggleableObjects) {
 }
 
   // add a function to update the map when the user clicks a toggle to show/hide something
-applyWhitelist = true;
+applyWhitelist = false;
 function updateMapLayers() {
   const style = map.getStyle();
   let layers = [];
@@ -138,9 +134,10 @@ function updateMapLayers() {
       map.setLayoutProperty(layer.id, "visibility", "none");
     } else {
       map.setLayoutProperty(layer.id, "visibility", "visible")
-      console.log(layer.id)
+      // console.log(layer.id)
     }
     layers.push(layer.id);
+    console.log(layers)
   }
 }
 
@@ -216,7 +213,7 @@ maxDateInput.addEventListener('input', () => {
   }
   setFill()
 });
-minEraInput.addEventListener('input', () => {
+maxEraInput.addEventListener('input', () => {
   maxEraDisplay.innerHTML = maxEraInput.value
   if (maxEraInput.innerHTML == 'BC') {
     slider.max = (maxDateInput.value * -1)
@@ -226,12 +223,47 @@ minEraInput.addEventListener('input', () => {
   setFill()
 });
 
+// date display stuf
+const dateDisplay = document.getElementById('current-date-display')
+
+function updateDateDisplay() {
+  const val = Number(slider.value)
+  const min = Number(slider.min)
+  const max = Number(slider.max)
+  const percent = (val - min) / (max - min)
+  const sliderWidth = slider.offsetWidth - 50 // subtract padding
+  const displayWidth = dateDisplay.offsetWidth
+  const sliderOffset = percent * (sliderWidth);
+  const displayHalfWidth = displayWidth / 2;
+  dateDisplay.style.left = `${sliderOffset - (displayHalfWidth - 35)}px`
+  // console.log(`sliderOffset: ${sliderOffset - (displayHalfWidth - 35)}, sliderWidth: ${sliderWidth} displayHalfWidth: ${displayHalfWidth}, displayhalfwidth - 35: ${(displayHalfWidth - 35)}`)
+
+  if (val < 0) {
+    dateDisplay.innerHTML = `${Math.abs(val)} BC`
+  } else {
+    dateDisplay.innerHTML = `${val} AD`
+  }
+}
+
+slider.addEventListener('input', () =>{
+  updateDateDisplay();
+})
+slider.addEventListener("mouseenter", () => {
+  dateDisplay.classList.remove("invisible")
+  updateDateDisplay()
+})
+slider.addEventListener("mouseleave", () => {
+  dateDisplay.classList.add("invisible")
+  updateDateDisplay()
+})
+updateDateDisplay()
+
 // event listener to update the map date based on the slider
 slider.addEventListener('mouseup', () => {
   date = Number(slider.value)
   date = date.toString()
-  console.log(date)
-  console.log(slider.value)
+  // console.log(date)
+  // console.log(slider.value)
   map.filterByDate(date)
 });
 

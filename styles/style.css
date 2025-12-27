@@ -23,6 +23,26 @@ html, body {
 }
 
 /* slider styles */
+#slider-container {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+}
+
+#current-date-display {
+    position: absolute;
+    justify-self: calc(100% + 10px);
+    bottom: 100px;  
+    left: 100px;
+    background-color: #4421AE;
+    padding: 15px 20px;
+    border-radius: 100px;
+    margin-bottom: 10px;
+    white-space: nowrap;
+}
+
 #slider-box {
     position: fixed;
     left: 10px;
@@ -38,11 +58,9 @@ html, body {
 }
 
 #slider {
-    justify-self: bottom;
     padding: 10px;
     min-width: 150px;
-    width: auto;
-    flex: 1 1 auto;
+    width: 100%;
     appearance: none;
     cursor: pointer;
     outline: none;
@@ -52,7 +70,7 @@ html, body {
     border-radius: 50px;
     border: 1px solid #4421AE;
     align-self: center;
-    margin: 0 10px;
+    margin: 0;
 }
 
 input[type="range"]::-webkit-slider-runnable-track {

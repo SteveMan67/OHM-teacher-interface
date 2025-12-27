@@ -35,6 +35,7 @@
                     <h3 id="borders">Boundaries</h3>
                     <h3 id="land">Land</h3>
                     <h3 id="background">Background</h3>
+                    <h3 id="rivers">Rivers</h3>
                 </div>
                 <h3>More...</h3>
 
@@ -44,7 +45,7 @@
         <script src="javascript/script.js" defer></script>
         <div id="slider-box">
             <div id="min-date-container">
-                <div id="min-date-selection">
+                <div id="min-date-selection" class="invisible">
                     <input type="number" id="min-date-input"></input>
                     <select name="era" id="min-era-select">
                         <option value="BC">BC</option>
@@ -57,9 +58,13 @@
                     
                 </div>
             </div>
+            <div id="slider-container">
+            <div id="current-date-display" class="invisible">0</div>
             <input id="slider" type="range" min="-67" max="67"></input>
+            </div>
+
             <div id="max-date-container">
-                <div id="max-date-selection">
+                <div id="max-date-selection" class="invisible">
                     <input type="number" id="max-date-input"></input>
                     <select name="era" id="max-era-select">
                         <option value="BC">BC</option>
