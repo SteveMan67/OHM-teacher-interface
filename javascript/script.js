@@ -160,19 +160,24 @@ function updateMapLayers() {
 }
 
 function isValidDate(year, era) {
-  const CurrentYear = new Date().GetFullyear()
-  if(year <= 0){
+  const CurrentYear = 2026
+  if(year == null) {
+    console.log("`year is null")
     return false;
-  }
-  if(era == 'AD' && year > CurrentYear) {
+  } if(year < 0) {
+    console.log(`${year} is less than 0`)
+    return false;
+  } else if(era == 'AD' && year > CurrentYear) {
+    console.log(`${year} is more than current year`)
     return false
-  }
-  if(era == 'BC' && year > 3000) {
+  } else if (era == 'BC' && year > 3000) {
+    console.log(`${year} is less than 3000 BC`)
     return false
   } else {
     return true
   }
 }
+
 // date range event listeners
 const minDateSelection = document.getElementById('min-date-selection')
 const maxDateSelection = document.getElementById('max-date-selection')
@@ -180,8 +185,6 @@ const minDateDisplay = document.getElementById('min-date')
 const maxDateDisplay = document.getElementById('max-date')
 const minEraDisplay = document.getElementById('min-era')
 const maxEraDisplay = document.getElementById('max-era')
-// const minDisplay = document.getElementById()
-// const maxDisplay = document.getElementById()
 const minEraInput = document.getElementById('min-era-select')
 const maxEraInput = document.getElementById('max-era-select')
 const minDateInput = document.getElementById('min-date-input')
@@ -191,6 +194,9 @@ minDateSelection.classList.add('invisible')
 maxDateSelection.classList.add('invisible')
 const minDate = document.getElementById('min-date-container')
 const maxDate = document.getElementById('max-date-container')
+
+let lastValidMin = 1776
+let lastValidMax = 2025
 
 minDate.addEventListener('mouseenter', () => {
   minDateSelection.classList.remove('invisible')
@@ -215,11 +221,21 @@ maxDate.addEventListener('mouseleave', () => {
 })
 
 minDateInput.addEventListener('input', () => {
-  minDateDisplay.innerHTML = minDateInput.value
-  if (minEraDisplay.innerHTML == 'BC') {
-    slider.min = (minDateInput.value * -1)
+  let date = minDateInput.value
+  if (date == "") {
+    date = 0;
+    slider.min = 0
+    minDateDisplay.innerHTML = 0
+    lastValidmin = 0 
+    print(date)
+  } else if (minEraDisplay.innerHTML == 'BC' && isValidDate(minDateInput.value, minEraDisplay)) {
+    slider.min = (date * -1)
+  } else if (!isValidDate(date, minEraDisplay)) {
+    minDateInput.value = lastValidMin
   } else {
-    slider.min = minDateInput.value
+    slider.min = date
+    minDateDisplay.innerHTML = date
+    lastValidMin = date
   }
   setFill()
 });
@@ -234,10 +250,18 @@ minEraInput.addEventListener('input', () => {
 });
 maxDateInput.addEventListener('input', () => {
   maxDateDisplay.innerHTML = maxDateInput.value
-  if (maxEraDisplay.innerHTML == 'BC') {
+  let date = maxDateInput.value
+  if (date == "") {
+    date = 0;
+  }
+  if (maxEraDisplay.innerHTML == 'BC' && isValidDate(maxDateInput, maxEraDisplay)) {
     slider.max = (maxDateInput.value * -1)
+  } else if(!isValidDate(maxDateInput, maxEraDisplay)) {
+    maxDateInput.value = lastValidMin
   } else {
-    slider.max = maxDateInput.value
+    slider.max = date
+    maxDateDisplay.innerHTML = date
+    lastValidMax = date
   }
   setFill()
 });

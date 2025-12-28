@@ -56,16 +56,16 @@
                         <input type="number" id="min-date-input" value="1776"></input>
                         <select name="era" id="min-era-select">
                             <option value="BC">BC</option>
-                            <option value="AD">AD</option>
+                            <option value="AD" selected>AD</option>
                         </select>
                         <div id="selection-box"></div>
                     </div>
-                    <p id="min-date">1776</p><p id="min-era">BC</p>
+                    <p id="min-date">1776</p><p id="min-era">AD</p>
                 </div>
             </div>
             <div id="slider-container">
             <div id="current-date-display" class="invisible">0</div>
-            <input id="slider" type="range" min="-67" max="67"></input>
+            <input id="slider" type="range" min="1776" max="2025"></input>
             </div>
 
             <div id="max-date-container">
@@ -81,7 +81,7 @@
                         <input type="number" id="max-date-input" value="2025"></input>
                         <select name="era" id="max-era-select">
                             <option value="BC">BC</option>
-                            <option value="AD">AD</option>
+                            <option value="AD" selected>AD</option>
                         </select>
                         <div id="selection-box"></div>
                     </div>

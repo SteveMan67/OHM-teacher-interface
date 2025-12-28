@@ -174,7 +174,7 @@ input[type="range"]::-moz-range-thumb {
 }
 #min-date-selection input, #max-date-selection input {
     font-size: 40px;
-    min-width: 4ch;
+    min-width: 1ch;
     margin: 0;
     height: 60px;
     background-color: #4421AE;
