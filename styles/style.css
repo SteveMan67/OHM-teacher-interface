@@ -171,11 +171,10 @@ input[type="range"]::-moz-range-thumb {
 #max-date-selection select:focus {
     outline: none;
     border: none;
-    caret-color: transparent;
 }
 #min-date-selection input, #max-date-selection input {
     font-size: 40px;
-    width: 100px;
+    min-width: 4ch;
     margin: 0;
     height: 60px;
     background-color: #4421AE;
@@ -184,7 +183,17 @@ input[type="range"]::-moz-range-thumb {
     color: white;
     align-self: center;
     font-family: "Heebo", sans-serif;
+    -moz-appearance: textfield;
 }
+
+#min-date-selection input::-webkit-outer-spin-button,
+#min-date-selection input::-webkit-inner-spin-button,
+#max-date-selection input::-webkit-outer-spin-button,
+#max-date-selection input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 #min-date-selection select, #max-date-selection select {
     font-size: 40px;
     margin: 0;

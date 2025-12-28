@@ -251,6 +251,20 @@ maxEraInput.addEventListener('input', () => {
   setFill()
 });
 
+// input resizing 
+function resizeInput(input) {
+  input.style.width = 'calc(' + (input.value.length || 1) + 'ch + 15px)';
+}
+
+minDateInput.addEventListener('input', () => {
+  resizeInput(minDateInput)
+})
+resizeInput(minDateInput)
+maxDateInput.addEventListener('input', () => {
+  resizeInput(maxDateInput)
+})
+resizeInput(maxDateInput)
+
 // date display stuf
 const dateDisplay = document.getElementById('current-date-display')
 
