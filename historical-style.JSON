@@ -13472,7 +13472,7 @@
         "symbol-placement": "point",
         "text-justify": "center",
         "visibility": "visible",
-        "text-field": ["coalesce", ["get", "name_en"], ["get", "name"]],
+        "text-field": ["coalesce", ["get", "name:en"], ["get", "name"]],
         "text-max-width": 7
       },
       "paint": {
