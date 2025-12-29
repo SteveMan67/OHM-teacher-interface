@@ -310,12 +310,12 @@ function isLessThanDate(date = minDateInput.value, era = minEraInput.value, comp
       return (date > compareDate)
     } else {
       // BC dates cannot be more than AD dates
-      return false
+      return true
     } 
   } else {
     if (compareEra == "BC") {
       // AD dates always are more than BC dates
-      return true
+      return false
     } else {
       // dates are both AD, higher number is younger
       return (date < compareDate)
@@ -379,13 +379,21 @@ minDateInput.addEventListener('focusout', () => {
 })
 
 minEraInput.addEventListener('input', () => {
-  minEraDisplay.innerHTML = minEraInput.value
-  if (minEraInput.value == 'BC') {
-    slider.min = (minDateInput.value * -1)
-  } else {
-    slider.min = minDateInput.value
-  }
+  if (isLessThanDate()) {
+    minEraDisplay.innerHTML = minEraInput.value
+    if (minEraInput.value == 'BC') {
+      slider.min = (minDateInput.value * -1)
+    } else {
+      slider.min = minDateInput.value
+    } 
   setFill()
+  } else {
+    if (minEraInput.value == "BC") {
+      minEraInput.value = "AD"
+    } else {
+      minEraInput.value = "BC"
+    }
+  }
 });
 
 maxDateInput.addEventListener('input', () => {
@@ -416,13 +424,21 @@ maxDateInput.addEventListener('focusout', () => {
 })
 
 maxEraInput.addEventListener('input', () => {
-  maxEraDisplay.innerHTML = maxEraInput.value
-  if (maxEraInput.value == 'BC') {
-    slider.max = (maxDateInput.value * -1)
+  if(isLessThanDate()) {
+    maxEraDisplay.innerHTML = maxEraInput.value
+    if (maxEraInput.value == 'BC') {
+      slider.max = (maxDateInput.value * -1)
+    } else {
+      slider.max = maxDateInput.value
+    }
+    setFill()
   } else {
-    slider.max = maxDateInput.value
+    if (maxEraInput.value == "BC") {
+      maxEraInput.value = "AD"
+    } else {
+      maxEraInput.value = "AD"
+    }
   }
-  setFill()
 });
 
 // input resizing 
