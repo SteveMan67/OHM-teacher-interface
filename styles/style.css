@@ -4,12 +4,15 @@ html, body {
     padding: 0;
     height: 100%;
     font-family: "Heebo", sans-serif;
+    overflow: hidden;
 }
 
 /* map styles (not much) */
 #map {
     width: 100%;
     height: 100%;
+    overflow: hidden;
+    scrollbar-width: none;
 }
 
 /* map controls */
@@ -235,6 +238,7 @@ nav {
     padding: 0 10px;
     white-space: nowrap;
     margin: 0;
+    cursor: pointer;
 }
 
 .greyed-out {
@@ -260,10 +264,12 @@ nav {
     /* images */
 #export img {
     padding: 0 10px;
+    cursor: pointer;
 }
 
 #filter img {
     padding: 0 10px;
+    cursor: pointer;
 }
 
 /* options */
@@ -274,9 +280,41 @@ nav {
     width: 100%;
     height: 100%;
     z-index: 20000000;
-    background-color: rgb(0 0 0 / 20%);
+    background-color: rgb(0 0 0 / 50%);
     display: flex;
     justify-content: center;
+}
+/* loading screen */
+#loading-screen {
+    background-color: white;
+    justify-self: center;
+    align-self: center;
+    z-index: 20000001;
+    border-radius: 10px;
+    scrollbar-width: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+#load-text {
+    padding: 10px;
+    font-size: 1.2rem;
+    font-family: 'Heebo', sans-serif;
+}
+#spinner {
+    width: 50px;
+    height: 50px;
+    border: 15px solid rgba(0, 0, 0, 0.2);
+    border-top-color: #4421AE;
+    border-radius: 50%;
+    margin: 15px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* layer selection */
@@ -322,6 +360,9 @@ nav {
     border: 1px solid rgb(0 0 0 / 50%);
     margin: 0 50px;
 }
+
+
+
 
 /* misc */
 .invisible {

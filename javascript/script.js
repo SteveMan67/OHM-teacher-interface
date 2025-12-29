@@ -37,11 +37,16 @@ function setLanguage(lang) {
   }
 }
 
+const list = document.getElementById("filters")
+const optionsContainer = document.getElementById("options-container")
+const layerSelection = document.getElementById("layer-selection")
+const loadingScreen = document.getElementById('loading-screen')
+const loadingText = document.getElementById('load-text')
 
 async function downloadAsPng(width = 3840, height = 2160, filename = 'MapThingy-download.png') {
+  optionsContainer.classList.remove('invisible')
+  loadingScreen.classList.remove('invisible')
   const container = map.getContainer()
-  const originalWidth = container.clientWidth;
-  const originalHeight = container.clientHeight;
   const originalZoom = map.getZoom()
   const { lng: originalLng, lat: originalLat } = map.getCenter()
   const originalBearing = map.getBearing()
@@ -72,6 +77,8 @@ async function downloadAsPng(width = 3840, height = 2160, filename = 'MapThingy-
     map.resize()
     map.jumpTo({ center: [originalLng, originalLat], zoom: originalZoom, bearing: originalBearing, pitch: originalPitch })
   }, 'image/png')
+  optionsContainer.classList.add('invisible')
+  loadingScreen.classList.add('invisible')
 }
 
 
@@ -80,7 +87,7 @@ const saveButtons = [document.getElementById('save-img'), document.getElementByI
 
 for (el of saveButtons) {
   el.addEventListener('click', () => {
-    downloadAsPng()
+    downloadAsPng(1920, 1080)
   })
 }
 
@@ -139,9 +146,6 @@ let toggleableObjects = [
 ];
 
 // toggle event listeners
-const list = document.getElementById("filters")
-const optionsContainer = document.getElementById("options-container")
-const layerSelection = document.getElementById("layer-selection")
 
 for (const [id, layers, defaultChecked, name] of toggleableObjects) {
   const el = document.getElementById(id)
@@ -211,21 +215,24 @@ for (const [id, layers, defaultChecked, name] of toggleableObjects) {
   })
 }
 
-filterButtons = [document.getElementById("filter-img"), document.getElementById("more-filters")]
 
+filterButtons = [document.getElementById("filter-img"), document.getElementById("more-filters")]
+let clickOnBackgroundToClose = false
 for (el of filterButtons) {
   el.addEventListener("click", () => {
+    clickOnBackgroundToClose = true
     optionsContainer.classList.remove("invisible")
     layerSelection.classList.remove("invisible")
   })
 }
 const closeButton = document.getElementById("close-button")
 closeButton.addEventListener("click", () => {
+  clickOnBackgroundToClose = false
   optionsContainer.classList.add("invisible")
   layerSelection.classList.add("invisible")
 })
 optionsContainer.addEventListener("click", (e) => {
-  if (layerSelection.contains(e.target)) return;
+  if (layerSelection.contains(e.target) || !clickOnBackgroundToClose) return;
   optionsContainer.classList.add("invisible")
   layerSelection.classList.add("invisible")
 })
