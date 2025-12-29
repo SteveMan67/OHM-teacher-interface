@@ -21,6 +21,10 @@ html, body {
     margin: 80px 0 0 5px;
 }
 
+.maplibregl-ctrl-group:not(:empty) {
+    box-shadow: none;
+    border: 1px solid #4421AE;
+}
 
 /* slider styles */
 #slider-container {

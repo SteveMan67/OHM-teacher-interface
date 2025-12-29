@@ -237,7 +237,7 @@ optionsContainer.addEventListener("click", (e) => {
   layerSelection.classList.add("invisible")
 })
 
-  // add a function to update the map when the user clicks a toggle to show/hide something
+// add a function to update the map when the user clicks a toggle to show/hide something
 applyWhitelist = true;
 function toggleWhitelist() {
   if (applyWhitelist) {
@@ -265,8 +265,8 @@ function updateMapLayers() {
 
 function isValidDate(year, era) {
   const CurrentYear = 2026
-  if(year == null) {
-    console.log("`year is null")
+  if(year == "") {
+    console.log("`year is blank")
     return false;
   } if(year < 0) {
     console.log(`${year} is less than 0`)
@@ -281,6 +281,7 @@ function isValidDate(year, era) {
     return true
   }
 }
+
 
 // date range event listeners
 const minDateSelection = document.getElementById('min-date-selection')
@@ -298,6 +299,29 @@ minDateSelection.classList.add('invisible')
 maxDateSelection.classList.add('invisible')
 const minDate = document.getElementById('min-date-container')
 const maxDate = document.getElementById('max-date-container')
+
+function isLessThanDate(date = minDateInput.value, era = minEraInput.value, compareDate = maxDateInput.value, compareEra = maxEraInput.value) {
+  date = Number(date)
+  compareDate = Number(compareDate)
+  console.log(date, era, compareDate, compareEra)
+  if (era == "BC") {
+    if (compareEra == "BC") {
+      // dates are both bc, higher number is older
+      return (date > compareDate)
+    } else {
+      // BC dates cannot be more than AD dates
+      return false
+    } 
+  } else {
+    if (compareEra == "BC") {
+      // AD dates always are more than BC dates
+      return true
+    } else {
+      // dates are both AD, higher number is younger
+      return (date < compareDate)
+    }
+  }
+}
 
 let lastValidMin = 1776
 let lastValidMax = 2025
@@ -324,24 +348,36 @@ maxDate.addEventListener('mouseleave', () => {
   maxEraDisplay.classList.remove('invisible')
 })
 
+
+// check date validity only on focusout, but update slider on 
+// input to make it look better 
 minDateInput.addEventListener('input', () => {
+  if(isValidDate(minDateInput.value)) {
+    if (era = "BC") {
+      slider.min = minDateInput.value * -1
+    } else {
+      slider.min = minDateInput.value
+    }
+    setFill()
+  }
+});
+minDateInput.addEventListener('focusout', () => {
   let date = minDateInput.value
-  if (date == "") {
-    date = 0;
-    slider.min = 0
-    minDateDisplay.innerHTML = 0
-    lastValidmin = 0 
-  } else if (minEraInput.innerHTML == 'BC' && isValidDate(minDateInput.value, minEraDisplay)) {
-    slider.min = (date * -1)
-  } else if (!isValidDate(date, minEraDisplay)) {
-    minDateInput.value = lastValidMin
-  } else {
-    slider.min = date
+  if (isValidDate(minDateInput.value, minEraDisplay) && isLessThanDate()) {
+    if (minEraInput.innerHTML == 'BC') {
+      slider.min = (date * -1)
+    } else {
+      slider.min = date
+    }
     minDateDisplay.innerHTML = date
     lastValidMin = date
+    map.filterByDate(slider.value)
+    setFill()
+  } else {
+    minDateInput.value = lastValidMin
   }
-  setFill()
-});
+})
+
 minEraInput.addEventListener('input', () => {
   minEraDisplay.innerHTML = minEraInput.value
   if (minEraInput.value == 'BC') {
@@ -351,23 +387,34 @@ minEraInput.addEventListener('input', () => {
   }
   setFill()
 });
+
 maxDateInput.addEventListener('input', () => {
-  maxDateDisplay.innerHTML = maxDateInput.value
-  let date = maxDateInput.value
-  if (date == "") {
-    date = 0;
+  if(isValidDate(maxDateInput.value)) {
+    if (era = "BC") {
+      slider.max = maxDateInput.value * -1
+    } else {
+      slider.max = maxDateInput.value
+    }
+    setFill()
   }
-  if (maxEraInput.value == 'BC' && isValidDate(maxDateInput, maxEraDisplay)) {
-    slider.max = (maxDateInput.value * -1)
-  } else if(!isValidDate(maxDateInput, maxEraDisplay)) {
-    maxDateInput.value = lastValidMin
-  } else {
-    slider.max = date
+});
+maxDateInput.addEventListener('focusout', () => {
+  let date = maxDateInput.value
+  if (isValidDate(maxDateInput.value, maxEraDisplay) && isLessThanDate()) {
+    if (maxEraInput.innerHTML == 'BC') {
+      slider.max = (date * -1)
+    } else {
+      slider.max = date
+    }
     maxDateDisplay.innerHTML = date
     lastValidMax = date
+    map.filterByDate(slider.value)
+    setFill()
+  } else {
+    maxDateInput.value = lastValidMax
   }
-  setFill()
-});
+})
+
 maxEraInput.addEventListener('input', () => {
   maxEraDisplay.innerHTML = maxEraInput.value
   if (maxEraInput.value == 'BC') {
