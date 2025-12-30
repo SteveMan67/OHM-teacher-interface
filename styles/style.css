@@ -367,6 +367,7 @@ nav {
 #save-img-select {
     background-color: white;
     width: 80%;
+    max-width: 800px;
     min-width: 500px;
     overflow-y: scroll;
     justify-self: center;
@@ -391,7 +392,7 @@ nav {
     background-color: none;
     border-radius: 5px;
     font-family: "Heebo", sans-serif;
-    border: none !important;
+    border: none;
     padding: 0;
     font-size: 20px;
     height: 35px;

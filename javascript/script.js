@@ -260,8 +260,14 @@ const filetypeSelector = document.getElementById('filetype')
 const resolutionSelector = document.getElementById('resolution')
 const downloadButton = document.getElementById('download-button')
 
-
-
+function sanitizeFilename(raw, ext = '.png') {
+  const reserved = /^(con|prn|aux|nul|com[1-9]|lpt[1-9])$/i;
+  let name = (raw || '').trim().replace(/[^a-z0-9._-]+/gi, '_');
+  name = name.slice(0, 80);
+  if (reserved.test(name)) name = `_${name}`;
+  if (!name.toLowerCase().endsWith(ext.toLowerCase())) name += ext;
+  return name;
+}
 
 downloadButton.addEventListener('click', () => {
   saveAsScreen.classList.add('invisible')
@@ -270,7 +276,13 @@ downloadButton.addEventListener('click', () => {
   let filetype = filetypeSelector.value
   let resolution = resolutionSelector.value
   clickOnBackgroundToClose = false;
-  filename = filename + String(filetype)
+  if (!filename) {
+    filename = 'MapThingyDownload'
+  } else {
+    filename = filename + String(filetype)
+  }
+  const ext = filetype.value
+  const safeName = sanitizeFilename(filename.value, ext)
   const container = map.getContainer()
   let res_x
   let res_y
@@ -284,7 +296,7 @@ downloadButton.addEventListener('click', () => {
     res_x = 3160;
     res_y = 2160;
   }
-  downloadAsPng(res_x, res_y, filename)
+  downloadAsPng(res_x, res_y, safeName)
 })
 
 
