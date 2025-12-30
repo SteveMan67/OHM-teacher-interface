@@ -385,6 +385,13 @@ function isLessThanDate(date = minDateInput.value, era = minEraInput.value, comp
     }
   }
 }
+function updateDate() {
+  date = Number(slider.value)
+  date = date.toString()
+  // console.log(date)
+  // console.log(slider.value)
+  map.filterByDate(date)
+}
 
 let lastValidMin = 1776
 let lastValidMax = 2025
@@ -457,6 +464,7 @@ minEraInput.addEventListener('input', () => {
       minEraInput.value = "BC"
     }
   }
+  updateDate()
 });
 
 maxDateInput.addEventListener('input', () => {
@@ -502,6 +510,7 @@ maxEraInput.addEventListener('input', () => {
       maxEraInput.value = "AD"
     }
   }
+  updateDate()
 });
 
 // input resizing 
@@ -554,12 +563,8 @@ slider.addEventListener("mouseleave", () => {
 updateDateDisplay()
 
 // event listener to update the map date based on the slider
-slider.addEventListener('mouseup', () => {
-  date = Number(slider.value)
-  date = date.toString()
-  // console.log(date)
-  // console.log(slider.value)
-  map.filterByDate(date)
+slider.addEventListener('input', () => {
+  updateDate();
 });
 
 // smth for debug

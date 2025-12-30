@@ -104,6 +104,7 @@ input[type="range"]::-webkit-slider-thumb {
     border: 0;
     position: relative;
     margin-top: calc((20px - 90px) / 2);
+
 }
 
 input[type="range"]::-moz-range-thumb {
@@ -255,6 +256,7 @@ nav {
 
 #scroll {
     display: flex;
+
     align-items: center;
     overflow-x: auto;
     scrollbar-width: none;
@@ -421,6 +423,85 @@ nav {
     margin-left: auto;
     margin-top: 20px;
 
+}
+
+/* phone styles */
+#rotate-phone {
+    display: none;
+}
+@media (max-width: 550px) {
+    #rotate-phone {
+        display: inherit;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: grey;
+        z-index: 999999999999900900;
+        vertical-align: middle;
+        align-self: center;
+        padding: 50% 10px;
+    }
+
+    
+}
+
+@media (max-width: 800px) {
+    /* nav bar */
+    #logo h1 {
+        display: none;
+    }
+    #export h3 {
+        display: none;
+    }
+    #export {
+        width: 30px;
+
+        height: 30px;
+        width: 30px;
+    }
+    #export img {
+        align-self: center;
+    }
+    #scroll {
+        display: none;
+    }
+    #filter h3 {
+        display: none;
+    }
+
+
+    /* slider */
+    #slider-box {
+        height: 50px;
+    }
+    /* date inputs */
+    #min-date, #max-date {
+        font-size: 20px;
+    }
+    #min-era, #max-era {
+        font-size: 15px;
+    }
+    #min-date-container, #max-date-container {
+        width: 60px;
+        min-width: 60px;
+    }
+    #min-date-selection select, #max-date-selection select {
+        font-size: 20px;
+    } 
+    #min-date-selection input, #max-date-selection input {
+        font-size: 20px;
+    } 
+    #min-date-selection, #max-date-selection {
+        height: 50px;
+    }
+    #min-date-box, #max-date-box {
+        height: 50px;
+        margin: 0;
+        padding: 0 10px;
+        width: 60px;
+    }
 }
 
 /* misc */
