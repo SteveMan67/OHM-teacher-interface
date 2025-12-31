@@ -725,7 +725,9 @@ let markers = []
 function addMarker(text = "haha", lng, lat) {
   const source = map.getSource('custom-markers')
   const data = source._data
+  let markerId = Date.now()
   data.features.push({
+    id: markerId,
     type: 'Feature',
     geometry: { type: 'Point', coordinates: [lng, lat] },
     properties: { "name:en": text, name: text }
@@ -856,6 +858,17 @@ ORDER BY DESC(?populationYear)`
     })
 }
 
+function deleteFeature(featureId, layer) {
+  const source = map.getSource(layer)
+  const data = source._data
+  const i = data.features.findIndex(f => f.id = featureId)
+
+  if (i != -1) {
+    data.features.splice(i, 1)
+    source.setData(data)
+  }
+}
+
 map.on('contextmenu', (e) => {
   // move the box to the mouse and display it
   rightClickMenuOpen = true
@@ -879,12 +892,13 @@ map.on('contextmenu', (e) => {
     let properties = features.map(f => f.properties)
     let source = features.map(f => f.source)
     let wikidata, wikipedia;
-    if(id && source != "osm_land") {
+    console.log(source[0])
+    if(id && source[0] != "osm_land" && source[0] != "custom-markers") {
         [wikidata, wikipedia] = await getWikidataId(id)
         console.log(wikidata, wikipedia)
     }
     // add them to the list
-    if (properties.length > 0 && source != "osm_land") {
+    if (properties.length > 0 && source != "osm_land" && source != "custom-markers") {
       let hr = document.createElement('hr')
       rightClickList.appendChild(hr)
       const includedProperties = ["name_en"]
@@ -907,23 +921,11 @@ map.on('contextmenu', (e) => {
     console.log(features)
     for (layer of features) {
       if (layer.source == "custom-markers") {
-        
-
         let deleteButton = document.createElement('li')
         deleteButton.textContent = "Delete Marker"
         rightClickList.appendChild(deleteButton)
         deleteButton.addEventListener('click', () => {
-          const source = map.getSource('custom-markers')
-          const data = source._data
-          const index = data.features.findIndex(f => 
-            f.geometry.type === "Point" && 
-            f.geometry.coordinates[0] === layer.geometry.coordinates[0] &&
-            f.geometry.coordinates[1] === layer.geometry.coordinates[1]
-          )
-          if (index != 1) {
-            data.features.splice(index, 1)
-            source.setData(data)
-          }
+          deleteFeature(layer.id, "custom-markers")
         })
         console.log("you clicked on your marker!")
       }
