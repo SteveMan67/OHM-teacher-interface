@@ -13,6 +13,7 @@ html, body {
     --text-on-black: #ffffff;
     --accent: #4421AE;
     --white-accent: #CCD5FF;
+    --accent-accent: #CCD5FF;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,6 +23,7 @@ html, body {
         --text-on-black: #000;
         --accent: #4421AE;
         --white-accent: #060A1C;
+        --accent-accent: #222227;
     }
 }
 
@@ -511,19 +513,34 @@ nav {
     left: 500px;
     min-width: 150px;
     min-height: 20px;
-    background-color: white;
+    background-color: var(--background);
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.438);
     border-radius: 20px;
 }
 #right-click ol {
-    padding: 10px;
+    padding: 10px 0;
     margin: 5px 0;
 }
 #right-click li {
+    padding: 0 10px;
     list-style-type: none;
     white-space: nowrap;
     font-size: 15px;
     cursor: pointer;
+    color: var(--text-on-white)
+}
+#right-click a {
+    color: var(--text-on-white);
+    min-width: 100%;
+}
+#right-click li:hover {
+    background: var(--accent-accent)
+}
+#right-click input {
+    background-color: var(--background);
+    border: none;
+    color: var(--text-on-white);
+    margin: 0 15px;
 }
 #marker {
     color:#495049; 

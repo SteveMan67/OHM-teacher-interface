@@ -22,7 +22,6 @@ map.on("styledata", () => {
     map.setProjection({type: 'mercator'})
     updateMapLayers()
     colorStyle = isDarkMode ? "Dark" : "Light"
-    updateColors()
     swapDarkModeImages(isDarkMode)
     map.filterByDate(slider.value)
     // const language = new MapboxLanguage();
@@ -110,6 +109,7 @@ map.on("styledata", () => {
         "text-translate-anchor": "map"
       }
     })
+    updateColors()
   }
 })
 
@@ -203,7 +203,12 @@ for (el of saveButtons) {
 
 
 let whitelist = [
-  "custom-markers-layer"
+  "custom-markers-layer",
+  "ohm_landcover_hillshade",
+  "landuse_areas_earth",
+  "water_areas",
+  "background",
+  "land"
 ];
 
 // set --val so that I can have the background to the right of the slider a different color
@@ -252,9 +257,104 @@ let customColors = [
 // list consists of lists of lists OH NO
 // where the structure of each list inside the list is
 // ["elementID", ["layers", "that", "it", "toggles", "off"], default-checked-boolean, "Pretty Name"]
+let filterList = [
+  {
+    id: "borders",
+    quickMenu: true,
+    toggledLayers: [
+      "country_boundaries",
+      "state_lines_admin_4"
+    ],
+    prettyName: "Borders",
+    isDefaultOn: true,
+    subcategories: [
+      {
+        id: "state_lines",
+        toggledLayers: [
+          "state_lines_admin_4"
+        ],
+        prettyName: "State Lines"
+      }
+    ]
+  },
+  {
+    id: "labels",
+    quickMenu: false,
+    toggledLayers: [
+      "city_locality_labels_other_z11",
+      "city_labels_other_z11",
+      "city_labels_town_z8",
+      "city_labels_z11",
+      "city_labels_z6",
+      "country_points_labels_cen", 
+      "country_points_labels",
+      "county_labels_z11_admin_7-8_centroids",
+      "county_labels_z11_admin_6_centroids",
+      "water_point_labels_ocean_sea",
+      "state_points_labels_centroids",
+      "city_capital_labels_z6",
+      "statecapital_labels_z10",
+      "state_points_labels",
+      "county_labels_z11",
+      "other_countries",
+      "placearea_label",
+      "custom-markers-layer"
+    ],
+    prettyName: "Labels",
+    subcategories: [
+      {
+        id: "major-cities",
+        toggledLayers: [
+          "city_labels_z6"
+        ],
+        prettyName: "Major-Cities"
+      },
+      {
+        id: "minor-cities",
+        toggledLayers: [
+          "city_locality_labels_other_z11",
+          "city_labels_other_z11",
+          "city_labels_town_z8",
+          "city_labels_z11",
+        ],
+        prettyName: "Minor Cities"
+      },
+      {
+        id: "state-labels",
+        toggledLayers: [
+          "state_points_labels_centroids",
+          "state_points_labels"
+        ]
+      },
+      {
+        id: "custom-markers",
+        toggledLayers: [
+          "custom-markers-layer"
+        ]
+      }
+    ]
+  },
+  {
+    id: "rivers",
+    quickMenu: false,
+    toggledLayers: [
+      "water_lines_stream_no_name",
+      "water_lines_stream_name",
+      "water_lines_ditch",
+      "water_lines_aqueduct",
+      "water_lines_labels",
+      "water_lines_labels_cliff",
+      "water_lines_labels_dam",
+      "water_areas_labels_z15",
+      "county_labels_z11",
+      "water_areas_labels_z12",
+      "water_areas_labels_z8",
+      "water_lines_river"
+    ]
+  }
+]
+
 let toggleableObjects = [
-  ["land", ["ohm_landcover_hillshade", "landuse_areas_earth", "land"], true, "Land Cover"],
-  ["background", ["water_areas", "background"], true, "Background"],
   ["borders", ["country_boundaries", "state_lines_admin_4",], true, "Borders"],
   ["labels", 
     ["city_locality_labels_other_z11",
@@ -274,7 +374,7 @@ let toggleableObjects = [
     "county_labels_z11",
     "other_countries",
     "placearea_label",
-    "custom-markers"], 
+    "custom-markers-layer"], 
     true, "Labels"],
   ["rivers", 
     ["water_lines_stream_no_name",
@@ -463,14 +563,17 @@ function toggleWhitelist() {
 
 // add a function to update the map when the user clicks a toggle to show/hide something
 let layers = [];
+let appliedLayers = []
 function updateMapLayers() {
   const style = map.getStyle();
   layers = []
+  appliedLayers = []
   for (const layer of style.layers) {
     if (!whitelist.includes(layer.id) && applyWhitelist || layer.id == "ohm_landcover_hillshade" && isDarkMode) {
       map.setLayoutProperty(layer.id, "visibility", "none");
     } else {
       map.setLayoutProperty(layer.id, "visibility", "visible")
+      appliedLayers.push(layer.id)
       // console.log(layer.id)
     }
     layers.push(layer.id);
