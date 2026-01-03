@@ -23,7 +23,7 @@ html, body {
         --text-on-black: #000;
         --accent: #4421AE;
         --white-accent: #060A1C;
-        --accent-accent: #222227;
+        --accent-accent: #27273a;
     }
 }
 
@@ -401,50 +401,147 @@ nav {
 /* layer selection */
 #layer-selection {
     background-color: var(--background);
-    width: 80%;
+    width: 50%;
     min-width: 500px;
-    height: 80%;
-    min-height: 500px;
+    max-width: 800px;
+    height: auto;
     overflow-y: scroll;
     justify-self: center;
     align-self: center;
     z-index: 20000001;
     border-radius: 50px;
     scrollbar-width: none;
+    padding: 40px 50px 50px 50px;
 }
 #top {
     display: flex;
+    height: 50px;
     justify-content: space-between;
-    padding: 30px 50px 0 50px;
+    padding: 0;
     color: var(--accent);
     align-items: center;
+    padding-bottom: 20px;
 }
 #top img {
     width: 20px;
     height: 20px;
     cursor: pointer;
+    align-self: center;
+}
+#top h2 { 
+    margin: 0;
 }
 
 #filters {
-    padding-left: 50px;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
 }
-#layer-selection li {
-    list-style-type: none;
-    font-size: 20px;
-    font-weight: bold;
-    margin-top: 10px;
-    cursor: pointer;
-    color: var(--text-on-white);
-    user-select: none;
+#column-1, #column-2 {
+    padding: 0;
+    width: calc(100% - 30px);
 }
-
-#layer-selection hr {
-    border: 1px solid rgb(0 0 0 / 50%);
-    margin: 0 50px;
+#column-1 {
+    padding-right: 5px;
 }
-
-.subcategory {
-    margin-left: 20px;
+#column-2 {
+    padding-left: 5px;
+}
+.filter {
+    width: calc(100% - 30px);
+    background-color: #CCD5FF;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    animation: ease;
+    animation-duration: 1000ms;
+    transition: transform 150ms ease, box-shadow 150ms ease;
+}
+.filter:hover {
+    transform: scale(1.02, 1.02);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+.filter-head {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 5px 0 5px;
+}
+.filter-head h3, .filter h3, .filter h4{
+    margin: 0;
+}
+.filter h3 {
+    font-weight: 700;
+    font-size: 24px;
+}
+.filter-subcategory h4 {
+    font-weight: 600;
+    font-size: 17px;
+    line-height: 20px;
+}
+.subcategories {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-bottom: 10px;
+    justify-content: center;
+}
+.filter-subcategory {
+    border: 1px solid white;
+    border-radius: 10px;
+    margin: 5px;
+    width: calc(50% - 35px);
+    height: 40px;
+    padding: 5px 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.filter-subcategory img {
+    width: 25px;
+    height: 25px;
+}
+.filter-subcategory h4 {
+    margin: 0;
+    text-align: center;
+}
+.centered-text {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+}
+#column-2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+#column-1 .filter {
+    padding: 0;
+    width: 100%;
+}
+#column-2 .filter {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+#labels {
+    border-top-left-radius: 17px;
+}
+#background {
+    border-top-right-radius: 17px;
+}
+#borders {
+    border-bottom-left-radius: 17px;
+}
+#battles {
+    border-bottom-right-radius: 17px;
 }
 
 /* Save As */
@@ -556,25 +653,98 @@ nav {
 #rotate-phone {
     display: none;
 }
-@media (max-width: 550px) {
-    #rotate-phone {
-        display: inherit;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: grey;
-        z-index: 999999999999900900;
-        vertical-align: middle;
+@media (max-width: 600px) and (orientation: portrait) {
+    /* nav bar */
+    #logo, #export, #filter {
+        margin: 10px 10px 0 10px;
+    }
+    #logo h1 {
+        display: none;
+    }
+    #export h3 {
+        display: none;
+        user-select: none;
+    }
+    #export {
+    }
+    #export img {
         align-self: center;
-        padding: 50% 10px;
+    }
+    #scroll {
+        display: none;
+    }
+    #filter h3 {
+        display: none;
+        user-select: none;
     }
 
-    
+    /* slider */
+    #slider-box {
+        height: 50px;
+    }
+    input[type="range"] {
+        padding: 5px !important;
+        height: 15px !important;
+        align-self: center;
+        width: 100% !important;
+    }
+    input[type="range"]::-webkit-slider-runnable-track {
+        height: 15px;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+        box-shadow: none;
+        appearance: none;
+        background-size: contain; 
+        height: 50px;
+        width: 17px;
+        margin-top: -18px;
+    }
+    #current-date-display {
+        bottom: 50px;
+        font-size: 15px;
+        padding: 7px 10px;
+    }
+    /* date inputs */
+    #min-date, #max-date {
+        font-size: 20px
+    }
+    #min-era, #max-era {
+        font-size: 15px;
+    }
+    #min-date-container, #max-date-container {
+        min-width: 60px;
+    }
+    #min-date-selection select, #max-date-selection select {
+        font-size: 20px;
+        height: 30px;
+        padding: 0;
+        margin-right: 10px;
+    } 
+    #min-date-selection input, #max-date-selection input {
+        font-size: 20px;
+        height: 30px;
+        width: 4ch;
+        padding: 0;
+    } 
+    #min-date-selection, #max-date-selection {
+        height: 40px;
+        display: flex;
+    }
+    #min-date-box, #max-date-box {
+        height: 40px;
+        margin: 5px;
+        padding: 0 10px;
+        width: auto;
+    }
+    #selection-box {
+        top: -1px;
+        left: -1px;
+        border: 1px solid white;
+    }
+
 }
 
-@media (orientation: landscape) and (max-height: 800px) and (hover: none) {
+@media (orientation: landscape) and (max-height: 750px) {
     /* nav bar */
     #logo, #export, #filter {
         margin: 10px 10px 0 10px;
@@ -666,23 +836,10 @@ nav {
 
 
     /* controls */
-    .maplibregl-ctrl-top-left {
-        float: right;   
-        margin: 0 10px 0 0;
-        padding-top: 0;
+    #map-controls {
+        top: 15px;
         left: auto;
-        right: 0;
-        top: 0;
-    }
-    .maplibregl-ctrl-bottom-right {
-        bottom: auto;
-        top: 0;
-        margin-right: 40px;
-    }
-
-    .maplibregl-ctrl-group:not(:empty) {
-        box-shadow: none;
-        border: 1px solid var(--accent);
+        right: 15px;
     }
 
     /* filters */
@@ -714,6 +871,17 @@ nav {
     #save-img-select hr {
         border: 1px solid #ffffff;
     }
+    #layer-selection {
+        color: white;
+    }
+    #top h2 {
+        color: white;
+    }
+    .filter {
+        background-color: #060A1C;
+        border: 2px solid #201e25;
+    }
+
 }
 
 /* misc */

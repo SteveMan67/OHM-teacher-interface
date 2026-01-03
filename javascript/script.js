@@ -23,7 +23,6 @@ map.on("styledata", () => {
   if(!once) {
     map.setProjection({type: 'mercator'})
     updateMapLayers()
-    addFilters()
     colorStyle = isDarkMode ? "Dark" : "Light"
     swapDarkModeImages(isDarkMode)
     map.filterByDate(slider.value)
@@ -272,11 +271,17 @@ let filterList = [
     isDefaultOn: true,
     subcategories: [
       {
-        id: "state_lines",
+        id: "state-lines",
         toggledLayers: [
           "state_lines_admin_4"
         ],
         prettyName: "State Lines"
+      },
+      {
+        id: "country-lines",
+        toggledLayers: [
+
+        ]
       }
     ]
   },
@@ -308,11 +313,11 @@ let filterList = [
     prettyName: "Labels",
     subcategories: [
       {
-        id: "major-cities",
+        id: "capital-cities",
         toggledLayers: [
           "city_labels_z6"
         ],
-        prettyName: "Major-Cities",
+        prettyName: "Capital Cities",
         quickMenu: true,
         isDefaultOn: true
       },
@@ -334,7 +339,7 @@ let filterList = [
           "state_points_labels_centroids",
           "state_points_labels"
         ],
-        prettyName: "State Labels",
+        prettyName: "States",
         quickMenu: true,
         isDefaultOn: false
       },
@@ -390,6 +395,8 @@ function toggleLayers(on, layerList) {
 }
 
 const toggleQuickMenu = document.getElementById("scroll")
+
+// new(er) filter event listener logic
 
 
 // toggle event listeners
@@ -447,8 +454,9 @@ function addFilters() {
         subcategory.classList.add("subcategory")
         if (!subItem.isDefaultOn) {
           subcategory.classList.add("greyed-out")
+          toggleLayers(false, subItem.toggledLayers)
         } else {
-          toggleLayers(true, i.toggledLayers)
+          toggleLayers(true, subItem.toggledLayers)
         }
         list.appendChild(subcategory)
         subcategory.addEventListener('click', () => {
@@ -637,36 +645,99 @@ function updateColors() {
 
 // handle Dark Mode from browser
 function swapDarkModeImages(isDarkMode) {
-  const saveImg = document.getElementById("save-img")
-  const filterImg = document.getElementById("filter-img")
-  const logoImg = document.getElementById("logo-img")
-  const plusImg = document.getElementById('zoom-in-img')
-  const minusImg = document.getElementById('zoom-out-img')
-  const globeImg = document.getElementById('globe-img')
-  const layerImg = document.getElementById('layers-img')
-  const filterCloseButton = document.getElementById('filter-close-button')
-  const saveAsCloseButton = document.getElementById('save-as-close-button')
+  const imgList = [
+    {
+      id: "save-img",
+      filename: "save"
+    },
+    {
+      id: "filter-img",
+      filename: "filter"
+    },
+    {
+      id: "logo-img",
+      filename: "icon"
+    },
+    {
+      id: "zoom-in-img",
+      filename: "plus"
+    },
+    {
+      id: "zoom-out-img",
+      filename: "minus"
+    },
+    {
+      id: "globe-img",
+      filename: "globe"
+    },
+    {
+      id: "layers-img",
+      filename: "layers"
+    },
+    {
+      id: "filter-close-button",
+      filename: "close"
+    },
+    {
+      id: "save-as-close-button",
+      filename: "close"
+    },
+    {
+      id: "label-checkbox-img",
+      filename: "unchecked"
+    },
+    {
+      id: "capital-img",
+      filename: "major-cities"
+    },
+    {
+      id: "minor-cities-img",
+      filename: "minor-cities"
+    },
+    {
+      id: "state-labels-img",
+      filename: "state"
+    },
+    {
+      id: "custom-markers-img",
+      filename: "custom-markers"
+    },
+    {
+      id: "borders-checkbox-img",
+      filename: "unchecked"
+    },
+    {
+      id: "country-borders-img",
+      filename: "country"
+    },
+    {
+      id: "state-borders-img",
+      filename: "state"
+    },
+    {
+      id: "background-img",
+      filename: "background"
+    },
+    {
+      id: "rivers-img",
+      filename: "river"
+    },
+    {
+      id: "battles-img",
+      filename: "battles"
+    }
+  ]
 
   if (isDarkMode) {
-    saveImg.src = "./images/icons/save-dark.png"
-    filterImg.src = "./images/icons/filter-dark.png"
-    logoImg.src = "./images/icons/logo-dark.png"
-    plusImg.src = "./images/icons/plus-dark.svg"
-    minusImg.src = "./images/icons/minus-dark.svg"
-    globeImg.src = "./images/icons/globe-dark.svg"
-    layerImg.src = "./images/icons/layers-dark.svg"
-    filterCloseButton.src = "./images/icons/close-dark.svg"
-    saveAsCloseButton.src = "./images/icons/close-dark.svg"
+    for (img of imgList) {
+      let el = document.getElementById(img.id)
+      el.src = `./images/icons/${img.filename}-dark.svg`
+    }
   } else {
-    saveImg.src = "./images/icons/save.png"
-    filterImg.src = "./images/icons/filter.png"
-    logoImg.src = "./images/icons/logo.png"
-    plusImg.src = "./images/icons/plus.svg"
-    minusImg.src = "./images/icons/minus.svg"
-    globeImg.src = "./images/icons/globe.svg"
-    layerImg.src = "./images/icons/layers.svg"
-    filterCloseButton.src = "./images/icons/close.svg"
-    saveAsCloseButton.src = "./images/icons/close.svg"
+    for (img of imgList) {
+      let el = document.getElementById(img.id)
+      el.src = `./images/icons/${img.filename}.svg`
+    }
   }
 }
 

@@ -77,7 +77,7 @@
             <div id="max-date-container">
                 <div id="max-date-box">
                     <div id="max-date-selection" class="invisible">
-                        <input type="number" id="max-date-input" value="2025"></input>
+                        <input type="number" id="max-date-input" value="2025" inputmode="numberic" pattern="[0-9]*" autocorrect="off" spellcheck="off"></input>
                         <select name="era" id="max-era-select">
                             <option value="BC">BC</option>
                             <option value="AD" selected>AD</option>
@@ -94,10 +94,86 @@
                     <h2>Filters</h2>
                     <img id="filter-close-button" src="images/icons/close.svg">
                 </div>
-                <hr>
-                <ol id="filters">
-
-                </ol>
+                <div id="filters">
+                    <div id="column-1">
+                        <!-- labels and borders -->
+                         <div id="labels" class="filter">
+                            <div class="filter-head">
+                                <div class="centered-text">
+                                    <h3>Labels</h3>
+                                </div>
+                                <img id="label-checkbox-img" src="./images/icons/unchecked-light.svg">
+                            </div>
+                            <div id="label-subcategories" class="subcategories">
+                                <div id="capital-cities" class="filter-subcategory">
+                                    <div class="centered-text">
+                                        <h4>Capital Cities</h4>
+                                    </div>
+                                    <img id="capital-img" src="./images/icons/major-cities-light.svg">
+                                </div>
+                                <div id="minor-cities" class="filter-subcategory">
+                                    <div class="centered-text">
+                                        <h4>Minor Cities</h4>
+                                    </div>
+                                    <img id="minor-cities-img" src="./images/icons/minor-cities-light.svg">
+                                </div>
+                                <div id="state-labels" class="filter-subcategory">
+                                    <div class="centered-text">
+                                        <h4>States</h4>
+                                    </div>
+                                    <img id="state-labels-img" src="./images/icons/state-light.svg">
+                                </div>
+                                <div id="custom-markers" class="filter-subcategory">
+                                    <div class="centered-text">
+                                        <h4>Custom Markers</h4>
+                                    </div>
+                                    <img id="custom-markers-img"  src="./images/icons/custom-markers-light.svg">
+                                </div>
+                            </div>
+                         </div>
+                         <div id="borders" class="filter">
+                            <div class="filter-head">
+                                <div class="centered-text">
+                                    <h3>Borders</h3>
+                                </div>
+                                
+                                <img id="borders-checkbox-img" src="./images/icons/unchecked-light.svg">
+                            </div>
+                            <div id="border-subcategories" class="subcategories">
+                                <div id="country-lines" class="filter-subcategory">
+                                    <h4>Countries</h4>
+                                    <img id="country-borders-img" src="./images/icons/country-light.svg">
+                                </div>
+                                <div id="state-lines" class="filter-subcategory">
+                                    <h4>States</h4>
+                                    <img id="state-borders-img" src="./images/icons/state-light.svg">
+                                </div>
+                            </div>
+                         </div>
+                    </div>
+                    <div id="column-2">
+                        <!-- background, rivers, and battles -->
+                         <div id="background" class="filter">
+                            <div class="centered-text">
+                                <h3>Background</h3>
+                            </div>
+                            <img id="background-img" src="./images/icons/background.svg">
+                         </div>
+                         <div id="rivers" class="filter">
+                            <div class="centered-text">
+                                <h3>Rivers</h3>
+                            </div>
+                            <img id="rivers-img" src="./images/icons/river.svg">
+                         </div>
+                         <div id="battles" class="filter">
+                            <div id="battles-text" class="centered-text">
+                            <h3>Battles</h3>
+                            <h4>(experimental)</h4>
+                            </div>
+                            <img id="battles-img" src="./images/icons/battles.svg">
+                         </div>
+                    </div>
+                </div>
             </div>
             <div id="loading-screen" class="invisible">
                 <div id="spinner"></div>
@@ -142,6 +218,5 @@
                 <li id="add-marker">Place Marker</li>
             </ol>
         </div>
-        <div id="rotate-phone">For the best experience, please rotate your phone.</div>
     </body>
 </html>

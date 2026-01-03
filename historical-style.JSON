@@ -12971,7 +12971,7 @@
       "type": "symbol",
       "source": "osm",
       "source-layer": "place_points_centroids",
-      "minzoom": 6,
+      "minzoom": 3,
       "maxzoom": 11,
       "filter": [
         "all",
@@ -13001,6 +13001,8 @@
           [
             "zoom"
           ],
+          3,
+          12,
           6,
           12,
           10,
@@ -13065,6 +13067,8 @@
           [
             "zoom"
           ],
+          3,
+          10,
           6,
           12,
           10,
