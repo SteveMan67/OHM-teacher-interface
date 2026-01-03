@@ -13033,7 +13033,7 @@
       }
     },
     {
-      "id": "city_capital_labels_z6",
+      "id": "city_capital_labels",
       "type": "symbol",
       "source": "osm",
       "source-layer": "place_points_centroids",
@@ -13068,9 +13068,9 @@
             "zoom"
           ],
           3,
-          10,
+          15,
           6,
-          12,
+          15,
           10,
           15
         ],

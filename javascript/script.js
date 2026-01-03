@@ -23,6 +23,7 @@ map.on("styledata", () => {
   if(!once) {
     map.setProjection({type: 'mercator'})
     updateMapLayers()
+    addFilters()
     colorStyle = isDarkMode ? "Dark" : "Light"
     swapDarkModeImages(isDarkMode)
     map.filterByDate(slider.value)
@@ -268,10 +269,11 @@ let filterList = [
       "state_lines_admin_4"
     ],
     prettyName: "Borders",
-    isDefaultOn: true,
+    isOn: true,
     subcategories: [
       {
         id: "state-lines",
+        isOn: true,
         toggledLayers: [
           "state_lines_admin_4"
         ],
@@ -279,8 +281,9 @@ let filterList = [
       },
       {
         id: "country-lines",
+        isOn: true,
         toggledLayers: [
-
+          "country_boundaries"
         ]
       }
     ]
@@ -288,7 +291,7 @@ let filterList = [
   {
     id: "labels",
     quickMenu: false,
-    isDefaultOn: true,
+    isOn: true,
     toggledLayers: [
       "city_locality_labels_other_z11",
       "city_labels_other_z11",
@@ -314,8 +317,9 @@ let filterList = [
     subcategories: [
       {
         id: "capital-cities",
+        isOn: true,
         toggledLayers: [
-          "city_labels_z6"
+          "city_capital_labels"
         ],
         prettyName: "Capital Cities",
         quickMenu: true,
@@ -323,11 +327,13 @@ let filterList = [
       },
       {
         id: "minor-cities",
+        isOn: false,
         toggledLayers: [
           "city_locality_labels_other_z11",
           "city_labels_other_z11",
           "city_labels_town_z8",
           "city_labels_z11",
+          "city_labels_z6"
         ],
         prettyName: "Minor Cities",
         quickMenu: true,
@@ -335,6 +341,7 @@ let filterList = [
       },
       {
         id: "state-labels",
+        isOn: true,
         toggledLayers: [
           "state_points_labels_centroids",
           "state_points_labels"
@@ -345,6 +352,7 @@ let filterList = [
       },
       {
         id: "custom-markers",
+        isOn: true,
         toggledLayers: [
           "custom-markers-layer"
         ],
@@ -356,7 +364,7 @@ let filterList = [
   {
     id: "rivers",
     quickMenu: false,
-    isDefaultOn: true,
+    isOn: true,
     prettyName: "Rivers",
     toggledLayers: [
       "water_lines_stream_no_name",
@@ -367,10 +375,18 @@ let filterList = [
       "water_lines_labels_cliff",
       "water_lines_labels_dam",
       "water_areas_labels_z15",
-      "county_labels_z11",
       "water_areas_labels_z12",
       "water_areas_labels_z8",
       "water_lines_river"
+    ]
+  },
+  {
+    id: "background",
+    quickMenu: false,
+    isOn: true,
+    toggledLayers: [
+      "background",
+      "water_areas"
     ]
   }
 ]
@@ -397,80 +413,62 @@ function toggleLayers(on, layerList) {
 const toggleQuickMenu = document.getElementById("scroll")
 
 // new(er) filter event listener logic
-
-
-// toggle event listeners
 function addFilters() {
-  for (filter of filterList) {
-    if (filter.quickMenu) {
-      toggleLayers(filter.isDefaultOn, filter.toggledLayers)
-      h3 = document.createElement('h3')
-      h3.textContent = filter.prettyName
-      h3.id = filter.id
-      if (!filter.isDefaultOn) {
-        h3.classList.add("greyed-out")
+  for (let filter of filterList) {
+    if(filter.isOn) {
+      toggleLayers(true, filter.toggledLayers)
+    }
+    const clickableElement = document.querySelectorAll(`#${filter.id}.head`)
+    const toggledElement = document.querySelectorAll(`#${filter.id}.filter`)
+    for (let i = 0; i < clickableElement.length; i++) {
+      console.log("are we there yet?")
+      console.log(false)
+      const element = clickableElement[i]
+      const toggledEl = toggledElement[i]
+      if (filter.isOn) {
+        toggledEl.classList.add("on")
+        toggleLayers(true, filter.toggledLayers)
+      } else {
+        toggleLayers(false, filter.toggledLayers)
       }
-      toggleQuickMenu.appendChild(h3)
-      h3.addEventListener('click', () => {
-        let indexOfFilter = filterList.findIndex(f => f.id == h3.id)
-        if (h3.classList.contains("greyed-out")) {
-          h3.classList.remove("greyed-out")
-          console.log(filterList[indexOfFilter].toggledLayers)
-          toggleLayers(true, filterList[indexOfFilter].toggledLayers)
+      element.addEventListener("click", () => {
+        console.log(filter.toggledLayers)
+        toggleLayers(!filter.isOn, filter.toggledLayers)
+        filter.isOn = !filter.isOn
+        if (filter.isOn) {
+          toggledEl.classList.add("on")
         } else {
-          h3.classList.add("greyed-out")
-          console.log(filterList[indexOfFilter].toggledLayers)
-          toggleLayers(false, filterList[indexOfFilter].toggledLayers)
+          toggledEl.classList.remove("on")
         }
       })
-    } else {
-      toggleLayers(filter.isDefaultOn, filter.toggledLayers)
     }
-    // add to filter list
-    let li = document.createElement('li')
-    li.textContent = filter.prettyName
-    li.id = filter.id
-    if (!filter.isDefaultOn) {
-      li.classList.add("greyed-out")
-    }
-    list.appendChild(li)
-    li.addEventListener('click', () => {
-      const i = filterList.findIndex(f => f.id == li.id)
-      if (li.classList.contains("greyed-out")) {
-        li.classList.remove("greyed-out")
-        toggleLayers(true, filterList[i].toggledLayers)
-      } else {
-        li.classList.add("greyed-out")
-        toggleLayers(false, filterList[i].toggledLayers)
-      }
-    })
-
-    // add any subfilters 
     if (filter.subcategories) {
-      for (const subItem of filter.subcategories) {
-        let subcategory = document.createElement('li')
-        subcategory.textContent = subItem.prettyName
-        subcategory.id = subItem.id
-        subcategory.classList.add("subcategory")
-        if (!subItem.isDefaultOn) {
-          subcategory.classList.add("greyed-out")
-          toggleLayers(false, subItem.toggledLayers)
+      for (let subcategory of filter.subcategories) {
+        if (subcategory.isOn) {
+          toggleLayers(true, subcategory.toggledLayers)
         } else {
-          toggleLayers(true, subItem.toggledLayers)
+          toggleLayers(false, subcategory.toggledLayers)
         }
-        list.appendChild(subcategory)
-        subcategory.addEventListener('click', () => {
-          if (subcategory.classList.contains("greyed-out")) {
-            subcategory.classList.remove("greyed-out")
-            toggleLayers(true, subItem.toggledLayers)
-          } else {
-            subcategory.classList.add("greyed-out")
-            toggleLayers(false, subItem.toggledLayers)
+        const id = document.querySelectorAll(`#${subcategory.id}`)
+        for (let element of id) {
+          if (subcategory.isOn) {
+            element.classList.add("on")
           }
-        })
+          element.addEventListener("click", () => {
+            console.log(subcategory.toggledLayers)
+            toggleLayers(!subcategory.isOn, subcategory.toggledLayers) 
+            subcategory.isOn = !subcategory.isOn
+            if (subcategory.isOn) {
+              element.classList.add("on")
+            } else {
+              element.classList.remove("on")
+            }
+          })
+        }
       }
     }
   }
+  
 }
 
 filterButtons = [document.getElementById("filter-img"), document.getElementById("more-filters")]

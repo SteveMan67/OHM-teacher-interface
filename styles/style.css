@@ -458,6 +458,7 @@ nav {
     animation: ease;
     animation-duration: 1000ms;
     transition: transform 150ms ease, box-shadow 150ms ease;
+    user-select: none;
 }
 .filter:hover {
     transform: scale(1.02, 1.02);
@@ -471,10 +472,12 @@ nav {
 }
 .filter-head h3, .filter h3, .filter h4{
     margin: 0;
+    user-select: none;
 }
 .filter h3 {
     font-weight: 700;
     font-size: 24px;
+    user-select: none;
 }
 .filter-subcategory h4 {
     font-weight: 600;
@@ -499,6 +502,7 @@ nav {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    user-select: none;
 }
 .filter-subcategory img {
     width: 25px;
@@ -543,6 +547,17 @@ nav {
 #battles {
     border-bottom-right-radius: 17px;
 }
+
+/* styles for when an element is on */
+.filter.on {
+    background-color: #4421AE;
+    color: white;
+}
+.filter.on .filter-subcategory.on {
+    background-color: white;
+    color: black;
+}
+
 
 /* Save As */
 #save-img-select {
@@ -881,6 +896,18 @@ nav {
         background-color: #060A1C;
         border: 2px solid #201e25;
     }
+
+    .filter.on {
+        background-color: #4421AE;
+        border: 2px solid #4421AE;
+        color: white;
+    }
+    .filter.on .filter-subcategory.on {
+        background-color: #060A1C;
+        color: white;
+        border: 1px solid #060A1C;
+    }
+
 
 }
 
