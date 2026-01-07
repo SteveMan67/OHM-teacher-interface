@@ -667,7 +667,6 @@ function toggleWhitelist() {
     applyWhitelist = true
   }
   updateMapLayers()
-  setHovers(false)
 }
 
 // add a function to update the map when the user clicks a toggle to show/hide something
@@ -686,6 +685,11 @@ function updateMapLayers() {
     }
     layers.push(layer.id);
     // console.log(layers)
+    if (hover) {
+      applyHovers(true)
+    } else {
+      applyHovers(false)
+    }
   }
 
 }
@@ -1332,15 +1336,22 @@ function deleteFeature(featureId, layer) {
   }
 }
 
-map.on('contextmenu', (e) => {
-  console.log("click me")
+function rightClick(e) {
   // move the box to the mouse and display it
   rightClickMenuOpen = true
   e.preventDefault()
   menu.classList.remove('invisible')
   menu.style.display = 'block';
-  menu.style.left = e.originalEvent.clientX + 'px'
-  menu.style.top = e.originalEvent.clientY + 'px'
+  let clientX, clientY
+  if (e.originalEvent.touches) {
+    clientX = e.originalEvent.touches[0].clientX
+    clientY = e.originalEvent.touches[0].clientY
+  } else {
+    clientX = e.originalEvent.clientX
+    clientY = e.originalEvent.clientY
+  }
+  menu.style.left = clientX + 'px'
+  menu.style.top = clientY + 'px'
 
   // add marker functionality
   const {lng: lng, lat: lat} = e.lngLat.wrap()
@@ -1394,6 +1405,29 @@ map.on('contextmenu', (e) => {
       }
     }
   })();  
+}
+
+map.on('contextmenu', (e) => {
+  rightClick(e)
+})
+
+let longPressTimer;
+let suppressMouseClose = false
+
+map.on('touchstart', (e) => {
+  suppressMouseClose = true
+  longPressTimer = setTimeout(() => {
+    rightClick(e)
+    console.log("click me")
+  }, 300)
+})
+
+map.on('touchend', () => {
+  clearTimeout(longPressTimer)
+})
+
+map.on('touchmove', () => {
+  clearTimeout(longPressTimer)
 })
 
 function addMarkerEventListener(lng, lat) {
@@ -1418,9 +1452,17 @@ function addMarkerEventListener(lng, lat) {
   })
 }
 
-
+document.addEventListener('touchstart', (e) => {
+  if (rightClickMenuOpen && !menu.contains(e.target)) {
+    closeMenu(e.target)
+  }
+})
 
 document.addEventListener('mousedown', (e) => {
+  if(suppressMouseClose) {
+    suppressMouseClose = false
+    return
+  }
   closeMenu(e.target)
 })
 
