@@ -577,6 +577,14 @@ nav {
     scrollbar-width: none;
     color: var(--text-on-white)
 }
+#save-img-select #top {
+    margin: 30px 50px 0 50px;
+}
+
+#save-as-close-button {
+    width: 25px;
+    height: 25px;
+}
 #save-img-select li {
     display: flex;
     flex-direction: row;
