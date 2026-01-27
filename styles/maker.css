@@ -1,0 +1,31 @@
+body {
+  font-family: 'Heebo', sans-serif;
+}
+
+nav {
+  display: flex;
+}
+
+.nav-item {
+  color: #4421AE;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: 1px solid #4421AE;
+  border-radius: 50px;
+  height: 30px;
+  padding: 10px;
+}
+.nav-item img {
+  width: 30px; 
+  height: 30px;
+}
+
+.nav-item h1 {
+  font-size: 20px;
+  padding: 0 5px;
+}
+
+a.nav-item {
+  text-decoration: none;
+}
